@@ -40,9 +40,14 @@ KNOWN_MINIONS = [f for f in listdir(DIRECTORY_PKI) if isdir(DIRECTORY_PKI)]
 for one_minion in KNOWN_MINIONS:
     one_minion_cache_dir = os.path.join(DIRECTORY_CACHE, one_minion)
     if isdir(one_minion_cache_dir):
-        age_of_d = modification_date(os.path.join(one_minion_cache_dir,
-                                                  'data.p'))
-        age_of_m = modification_date(os.path.join(one_minion_cache_dir,
-                                                  'mine.p'))
+        try:
+            age_of_d = modification_date(os.path.join(one_minion_cache_dir, 'data.p'))
+        except:
+            age_of_d = datetime.datetime.fromtimestamp(0)
+        
+        try:
+            age_of_m = modification_date(os.path.join(one_minion_cache_dir, 'mine.p'))
+        except:
+            age_of_m = datetime.datetime.fromtimestamp(0)
         lastseen = max(age_of_d, age_of_m)
         print datetime2string(lastseen) + "\t" + one_minion
